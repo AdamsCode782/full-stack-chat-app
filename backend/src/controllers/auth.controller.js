@@ -124,16 +124,16 @@ export const checkAuth = (req, res) => {
     res.status(500).json({ message: "Internal Server Error" });
   }
 };
+
 export const deleteProfile = async (req, res) => {
   try {
     const userId = req.user._id;
 
- 
-    await User.findByIdAndDelete(userId);
-
     await Message.deleteMany({
       $or: [{ senderId: userId }, { receiverId: userId }],
     });
+
+    await User.findByIdAndDelete(userId);
 
     res.cookie("jwt", "", {
       httpOnly: true,
@@ -143,8 +143,8 @@ export const deleteProfile = async (req, res) => {
     });
 
     return res.status(200).json({ message: "Profile deleted" });
-  } catch (error) {
-    console.log("Delete profile error:", error.message);
-    return res.status(500).json({ message: "Internal Server Error" });
+  } catch (err) {
+    console.log("Delete profile error:", err);
+    return res.status(500).json({ message: "Server error" });
   }
 };

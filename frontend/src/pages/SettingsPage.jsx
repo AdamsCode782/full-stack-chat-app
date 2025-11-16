@@ -1,6 +1,6 @@
 import { THEMES } from "../constants";
 import { useThemeStore } from "../store/useThemeStore";
-import { Send, Trash2 } from "lucide-react";
+import { Send } from "lucide-react";
 
 const PREVIEW_MESSAGES = [
   { id: 1, content: "Hey! How's it going?", isSent: false },
@@ -10,22 +10,9 @@ const PREVIEW_MESSAGES = [
 const SettingsPage = () => {
   const { theme, setTheme } = useThemeStore();
 
-  const deleteProfile = async () => {
-    try {
-      await fetch(`${import.meta.env.VITE_API_URL}/api/auth/delete-profile`, {
-        method: "DELETE",
-        credentials: "include",
-      });
-      window.location.href = "/signup";
-    } catch (e) {
-      console.log(e);
-    }
-  };
-
   return (
     <div className="h-screen container mx-auto px-4 pt-20 max-w-5xl">
       <div className="space-y-8">
-
         <div className="space-y-1">
           <h2 className="text-lg font-semibold">Theme</h2>
           <p className="text-sm text-base-content/70">Choose a theme for your chat interface</p>
@@ -60,7 +47,6 @@ const SettingsPage = () => {
         <div className="rounded-xl border border-base-300 bg-base-100 shadow-lg overflow-hidden">
           <div className="p-4 bg-base-200">
             <div className="bg-base-100 rounded-xl shadow-sm overflow-hidden max-w-lg mx-auto">
-
               <div className="px-4 py-3 border-b border-base-300 bg-base-100">
                 <div className="flex items-center gap-3">
                   <div className="w-8 h-8 rounded-full bg-primary flex items-center justify-center text-primary-content font-medium">
@@ -113,13 +99,6 @@ const SettingsPage = () => {
             </div>
           </div>
         </div>
-
-        <button
-          onClick={deleteProfile}
-          className="btn btn-error mt-6 flex items-center gap-2"
-        >
-          <Trash2 size={18} /> Delete My Profile
-        </button>
 
       </div>
     </div>
