@@ -1,0 +1,7 @@
+[functions]
+  directory = "netlify/functions"
+
+[[scheduled]]
+  name = "ping-backend"
+  cron = "*/5 * * * *"
+  function = "ping"
