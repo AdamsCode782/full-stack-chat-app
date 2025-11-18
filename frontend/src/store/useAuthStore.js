@@ -7,7 +7,7 @@ const DEV = import.meta.env.MODE === "development";
 
 const BASE_URL = DEV
   ? "http://localhost:5001"
-  : "https://full-stack-chat-app-rm9v.onrender.com"; // 🔥 backend URL on Render
+  : "https://full-stack-chat-app-rm9v.onrender.com";
 
 export const useAuthStore = create((set, get) => ({
   authUser: null,
@@ -21,8 +21,14 @@ export const useAuthStore = create((set, get) => ({
   checkAuth: async () => {
     try {
       const res = await axiosInstance.get("/auth/check");
-      set({ authUser: res.data });
-      get().connectSocket();
+
+      // res.data IS already the user object
+      if (res.data) {
+        set({ authUser: res.data });
+        get().connectSocket();
+      } else {
+        set({ authUser: null });
+      }
     } catch (error) {
       console.log("Error in checkAuth:", error);
       set({ authUser: null });
@@ -35,7 +41,13 @@ export const useAuthStore = create((set, get) => ({
     set({ isSigningUp: true });
     try {
       const res = await axiosInstance.post("/auth/signup", data);
-      set({ authUser: res.data });
+
+      // save jwt
+      localStorage.setItem("jwt", res.data.token);
+
+      // store ONLY the user, not the whole response
+      set({ authUser: res.data.user });
+
       toast.success("Account created successfully");
       get().connectSocket();
     } catch (error) {
@@ -49,7 +61,13 @@ export const useAuthStore = create((set, get) => ({
     set({ isLoggingIn: true });
     try {
       const res = await axiosInstance.post("/auth/login", data);
-      set({ authUser: res.data });
+
+      // save jwt
+      localStorage.setItem("jwt", res.data.token);
+
+      // store ONLY the user
+      set({ authUser: res.data.user });
+
       toast.success("Logged in successfully");
       get().connectSocket();
     } catch (error) {
@@ -62,6 +80,9 @@ export const useAuthStore = create((set, get) => ({
   logout: async () => {
     try {
       await axiosInstance.post("/auth/logout");
+
+      localStorage.removeItem("jwt");
+
       set({ authUser: null });
       toast.success("Logged out successfully");
       get().disconnectSocket();
@@ -74,7 +95,10 @@ export const useAuthStore = create((set, get) => ({
     set({ isUpdatingProfile: true });
     try {
       const res = await axiosInstance.put("/auth/update-profile", data);
+
+      // backend returns updated user object
       set({ authUser: res.data });
+
       toast.success("Profile updated successfully");
     } catch (error) {
       toast.error(error?.response?.data?.message || "Update failed");
@@ -89,8 +113,8 @@ export const useAuthStore = create((set, get) => ({
     if (!authUser || socket?.connected) return;
 
     const newSocket = io(BASE_URL, {
-      query: { userId: authUser._id },
-      withCredentials: true,
+      query: { userId: authUser._id }, // <-- now this WORKS
+      withCredentials: true, // not required now but harmless
     });
 
     set({ socket: newSocket });
