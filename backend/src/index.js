@@ -38,6 +38,16 @@ app.use(
   })
 );
 
+app.options("*", cors({
+  origin: [
+    "http://localhost:5173",
+    "http://127.0.0.1:5173",
+    "https://full-stack-chat-app-murex.vercel.app",
+  ],
+  credentials: true,
+}));
+
+
 // Routes
 app.use("/api/auth", authRoutes);
 app.use("/api/messages", messageRoutes);
