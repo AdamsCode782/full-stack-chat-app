@@ -9,7 +9,7 @@ export function setupSocket(server) {
       origin: [
         "http://localhost:5173",
         "http://127.0.0.1:5173",
-        "https://full-stack-chat.netlify.app",
+         "https://full-stack-chat-app-murex.vercel.app",
       ],
       credentials: true,
       methods: ["GET", "POST"],
