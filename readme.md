@@ -32,12 +32,6 @@ This is a complete demonstration of **frontend, backend, DevOps, security, UX, a
 
 ---
 
-# 🚀 Live Demo
-Frontend: **https://full-stack-chat-app-murex.vercel.app/login**  
-Backend: **https://full-stack-chat-app-rm9v.onrender.com/**
-
----
-
 # 🔥 Key Features
 
 ### **Authentication**
