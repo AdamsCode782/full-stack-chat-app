@@ -1,7 +1,5 @@
 # Convo — Real-Time Chat App (Full-Stack / Production-Ready)
-Convo is a fully deployed, production-ready **real-time messaging platform** built to demonstrate strong full‑stack engineering capability.
-
-**Live Demo:** https://full-stack-chat-app-murex.vercel.app/login
+Convo is a production-ready **real-time messaging platform** built to demonstrate strong full‑stack engineering capability.
 
 ![Hero](./frontend/public/Screenshot.png)
 
